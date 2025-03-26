@@ -1,10 +1,8 @@
 <p style="color: green"><%= notice %></p>
 
-<%= render @static_page %>
+<h1><%= @page.title %></h1>
 
 <div>
-  <%= link_to "Edit this static page", edit_static_page_path(@static_page) %> |
-  <%= link_to "Back to static pages", static_pages_path %>
-
-  <%= button_to "Destroy this static page", @static_page, method: :delete %>
+  <%= raw @page.content %>
 </div>
+
