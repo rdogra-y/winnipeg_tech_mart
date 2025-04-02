@@ -32,4 +32,21 @@ ActiveAdmin.register Product do
     end
     f.actions
   end
+
+  controller do
+    def update
+      if params[:product][:image]
+        resource.image.attach(params[:product][:image])
+      end
+      super
+    end
+
+    def create
+      super do |success, _failure|
+        if params[:product][:image]
+          resource.image.attach(params[:product][:image])
+        end
+      end
+    end
+  end
 end

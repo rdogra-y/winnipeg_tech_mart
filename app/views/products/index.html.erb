@@ -1,15 +1,58 @@
-<p style="color: green"><%= notice %></p>
+<% content_for(:title) { "Products" } %>
 
-<% content_for :title, "Products" %>
+<div style="max-width: 1200px; margin: 20px auto; padding: 20px; border: 2px solid #ddd; border-radius: 10px; background: #fff;">
 
-<h1>Products</h1>
+  <h1 style="font-size: 2rem; font-weight: bold; text-align: center; margin-bottom: 30px;">Products</h1>
 
-<div id="products">
-  <% @products.each do |product| %>
-    <%= render product %>
-    <p>
-      <%= link_to "Show this product", product %>
-    </p>
+  <% if notice %>
+    <div style="background-color: #e6ffed; border: 1px solid #a4f3c2; padding: 10px; margin-bottom: 20px; border-radius: 5px;">
+      <%= notice %>
+    </div>
   <% end %>
-</div>
 
+  <!-- Search and Filter -->
+  <div style="margin-bottom: 30px;">
+    <%= form_with url: products_path, method: :get, local: true do |f| %>
+      <div style="display: flex; flex-wrap: wrap; gap: 15px; align-items: flex-end; justify-content: center;">
+        <div>
+          <%= f.label :search, "Search:" %><br>
+          <%= f.text_field :search, value: params[:search], style: "min-width: 200px;" %>
+        </div>
+
+        <div>
+          <%= f.label :category_id, "Category:" %><br>
+          <%= f.collection_select :category_id, Category.all, :id, :name, { prompt: "None" }, { style: "min-width: 150px;" } %>
+        </div>
+
+        <div>
+          <%= f.label :filter, "Filter:" %><br>
+          <%= f.select :filter,
+            options_for_select([
+              ['All', ''],
+              ['On Sale', 'on_sale'],
+              ['New', 'new'],
+              ['Recently Updated', 'updated']
+            ], params[:filter]),
+            {}, { style: "min-width: 150px;" } %>
+        </div>
+
+        <div>
+          <br>
+          <%= f.submit "Apply", style: "padding: 6px 12px; background-color: #4caf50; color: white; border: none; border-radius: 4px; cursor: pointer;" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Products Grid -->
+  <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
+    <% @products.each do |product| %>
+      <%= render product %>
+    <% end %>
+  </div>
+
+  <!-- Pagination -->
+  <div style="margin-top: 30px; text-align: center;">
+    <%= paginate @products %>
+  </div>
+</div>

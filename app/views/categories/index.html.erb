@@ -1,16 +1,21 @@
-<p style="color: green"><%= notice %></p>
-
 <% content_for :title, "Categories" %>
 
-<h1>Categories</h1>
-
-<div id="categories">
-  <% @categories.each do |category| %>
-    <%= render category %>
-    <p>
-      <%= link_to "Show this category", category %>
-    </p>
+<div style="max-width: 900px; margin: 20px auto; padding: 20px; border: 2px solid #ddd; border-radius: 10px; background-color: #fff;">
+  <% if notice %>
+    <div style="background-color: #e6ffed; border: 1px solid #a4f3c2; padding: 10px; margin-bottom: 20px; border-radius: 5px;">
+      <%= notice %>
+    </div>
   <% end %>
-</div>
 
-<%= link_to "New category", new_category_path %>
+  <h1 style="text-align: center; font-size: 2rem; margin-bottom: 30px;">Browse by Category</h1>
+
+  <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
+    <% @categories.each do |category| %>
+      <div style="border: 1px solid #ccc; padding: 15px; width: 250px; border-radius: 8px; box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);">
+        <h2 style="font-size: 1.25rem;"><%= category.name %></h2>
+        <p style="margin-bottom: 10px;"><%= truncate(category.description, length: 100) %></p>
+        <%= link_to "View Products", category_path(category), style: "display: inline-block; padding: 8px 12px; background-color: #2196f3; color: white; text-decoration: none; border-radius: 4px; box-shadow: 1px 1px 5px rgba(0,0,0,0.2);" %>
+      </div>
+    <% end %>
+  </div>
+</div>

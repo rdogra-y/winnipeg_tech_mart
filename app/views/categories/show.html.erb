@@ -2,9 +2,46 @@
 
 <%= render @category %>
 
-<div>
-  <%= link_to "Edit this category", edit_category_path(@category) %> |
+<div>|
   <%= link_to "Back to categories", categories_path %>
 
-  <%= button_to "Destroy this category", @category, method: :delete %>
+  <% content_for :title, @category.name %>
+
+  <div style="max-width: 1000px; margin: 20px auto; padding: 20px; border: 2px solid #ddd; border-radius: 10px; background-color: #fff;">
+    <% if notice %>
+      <div style="background-color: #e6ffed; border: 1px solid #a4f3c2; padding: 10px; margin-bottom: 20px; border-radius: 5px;">
+        <%= notice %>
+      </div>
+    <% end %>
+  
+    <h1 style="font-size: 2rem; margin-bottom: 10px;"><%= @category.name %></h1>
+    <p style="margin-bottom: 30px;"><%= @category.description %></p>
+  
+    <h2 style="font-size: 1.5rem; margin-bottom: 15px;">Products in this category:</h2>
+  
+    <% if @category.products.any? %>
+      <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
+        <% @category.products.each do |product| %>
+          <div style="border: 1px solid #ccc; padding: 15px; width: 280px; border-radius: 8px; box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);">
+            <% if product.image.attached? %>
+              <%= image_tag product.image.variant(resize_to_limit: [250, 150]), style: "width: 100%; height: auto; border-radius: 5px; border: 1px solid #ccc;" %>
+            <% else %>
+              <div style="height: 150px; background-color: #f5f5f5; text-align: center; line-height: 150px; border: 1px solid #ccc;">No Image</div>
+            <% end %>
+  
+            <h3 style="font-size: 1.2rem; margin: 10px 0 5px;"><%= product.name %></h3>
+            <p><strong>Price:</strong> $<%= product.price %></p>
+            <p><%= truncate(product.description, length: 80) %></p>
+            <%= link_to "View Product", product_path(product), style: "display: inline-block; margin-top: 10px; padding: 6px 10px; background-color: #2196f3; color: white; text-decoration: none; border-radius: 4px;" %>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <p style="color: gray;">There are no products in this category yet.</p>
+    <% end %>
+  
+    <div style="margin-top: 30px;">
+      <%= link_to "Back to categories", categories_path, style: "text-decoration: none; color: #2196f3;" %>
+    </div>
+  </div>
 </div>
