@@ -23,20 +23,18 @@
           <p>Current Quantity: <%= session[:cart][product.id.to_s] %></p>
 
           <%= form_with url: update_item_cart_path(product), method: :post, local: true do %>
-            <div class="form-group">
-              <%= hidden_field_tag :product_id, product.id %>
-              <%= number_field_tag :quantity, session[:cart][product.id.to_s], min: 1, class: "form-control w-25 d-inline" %>
-              <%= submit_tag "Update Quantity", class: "btn btn-sm btn-outline-success ml-2" %>
-            </div>
+            <%= hidden_field_tag :product_id, product.id %>
+            <%= number_field_tag :quantity, session[:cart][product.id.to_s], min: 1, class: "form-control w-25 d-inline" %>
+            <%= submit_tag "Update Quantity", class: "btn btn-sm btn-outline-success ml-2" %>
           <% end %>
 
-          <%= button_to "Remove", remove_item_cart_path(product), method: :post,
-              data: { confirm: "Are you sure?" }, class: "btn btn-sm btn-outline-danger" %>
-        </div>
+          <%= button_to "Remove", remove_item_cart_path(product), method: :delete,
+              data: { confirm: "Are you sure?" }, class: "btn btn-sm btn-outline-danger mt-2" %>
+
+        </div> <!-- closes the card div -->
       <% end %>
 
-      <p><strong>Total: $<%= @cart_items.sum { |p| p.price * session[:cart][p.id.to_s] } %></strong></p>
-
+      <p><strong>Total: $<%= @cart_items.sum { |p| p.price * session[:cart][p.id.to_s].to_i } %></strong></p>
       <%= link_to "Checkout", new_checkout_path, class: "btn btn-primary" %>
     <% else %>
       <p>Your cart is empty.</p>

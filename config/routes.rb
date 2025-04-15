@@ -8,7 +8,7 @@ Rails.application.routes.draw do
 
   resource :cart, only: [:show] do
     post   'add/:product_id',    to: 'carts#add',    as: 'add_to'
-    post   'update/:product_id', to: 'carts#update', as: 'update_item'
+    post   'update/:product_id', to: 'carts#update_quantity', as: 'update_item'
     delete 'remove/:product_id', to: 'carts#remove', as: 'remove_item'
   end
  

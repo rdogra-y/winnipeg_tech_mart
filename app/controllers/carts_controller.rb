@@ -20,9 +20,18 @@ class CartsController < ApplicationController
   def update_quantity
     id = params[:product_id].to_s
     quantity = params[:quantity].to_i
-    session[:cart][id] = quantity > 0 ? quantity : nil
-    redirect_to cart_path, notice: "Quantity updated."
+  
+    if quantity > 0
+      session[:cart][id] = quantity
+      flash[:notice] = "Quantity updated."
+    else
+      session[:cart].delete(id)
+      flash[:alert] = "Item removed due to 0 quantity."
+    end
+  
+    redirect_to cart_path
   end
+  
 
   private
 
