@@ -10,7 +10,7 @@
     </div>
   <% end %>
 
-  <!-- Search and Filter -->
+  <!-- 🔍 Search and Filter -->
   <div style="margin-bottom: 30px;">
     <%= form_with url: products_path, method: :get, local: true do |f| %>
       <div style="display: flex; flex-wrap: wrap; gap: 15px; align-items: flex-end; justify-content: center;">
@@ -44,14 +44,29 @@
     <% end %>
   </div>
 
-  <!-- Products Grid -->
+  <!-- 🛍️ Products Grid -->
   <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
     <% @products.each do |product| %>
-      <%= render product %>
+      <div style="border: 1px solid #ccc; padding: 15px; border-radius: 8px; width: 250px; background-color: #fafafa;">
+        <h3><%= product.name %></h3>
+          <% if product.image.attached? %>
+            <%= image_tag product.image, width: 150 %>
+          <% end %>
+        <p><%= truncate(product.description, length: 100) %></p>
+        <p><strong>$<%= product.price %></strong></p>
+
+        <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+        <%= button_to "Add to Cart", add_to_cart_path(product_id: product.id), method: :post, class: "btn btn-success" %>
+    
+        <%= link_to product_path(product), class: "btn btn-outline-primary", style: "margin-left: 10px;" do %>
+          🔍 View
+        <% end %>
+      </div>
+      </div>
     <% end %>
   </div>
 
-  <!-- Pagination -->
+  <!-- 📄 Pagination -->
   <div style="margin-top: 30px; text-align: center;">
     <%= paginate @products %>
   </div>

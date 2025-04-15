@@ -1,0 +1,20 @@
+<h1>Checkout</h1>
+
+<p>Your Province: <%= current_user.province&.name || "Not Set" %></p>
+
+<% if current_user.province.nil? %>
+  <p>Please update your profile with your province before continuing.</p>
+<% else %>
+  <%= form_with model: @order do |f| %>
+    <h2>Items:</h2>
+    <ul>
+      <% @cart_items.each do |product| %>
+        <li>
+          <%= product.name %> — Qty: <%= session[:cart][product.id.to_s] %> — 
+          $<%= product.price * session[:cart][product.id.to_s].to_i %>
+        </li>
+      <% end %>
+    </ul>
+    <%= f.submit "Place Order", class: "btn btn-success" %>
+  <% end %>
+<% end %>

@@ -1,0 +1,23 @@
+<h1>Checkout</h1>
+
+<%= form_with url: checkout_index_path, method: :post, local: true do %>
+  <h2>Shipping Details</h2>
+
+  <p><strong>Select your province:</strong></p>
+  <%= select_tag :province_id, options_from_collection_for_select(@provinces, :id, :name) %>
+
+  <h2>Your Cart</h2>
+  <ul>
+    <% @cart.items.each do |item| %>
+      <li>
+        <%= item[:product].name %> -
+        Qty: <%= item[:quantity] %> -
+        $<%= item[:product].price * item[:quantity] %>
+      </li>
+    <% end %>
+  </ul>
+
+  <p><strong>Total (without taxes):</strong> $<%= @cart.total %></p>
+
+  <%= submit_tag "Place Order", class: "btn btn-primary" %>
+<% end %>

@@ -4,29 +4,28 @@ class ProductsController < InheritedResources::Base
   def index
     @products = Product.all
 
-    # Keyword Search
+    # 🔍 Keyword Search
     if params[:search].present?
       keyword = "%#{params[:search]}%"
       @products = @products.where("name ILIKE ? OR description ILIKE ?", keyword, keyword)
     end
 
-    # Category Filter
+    # 📂 Category Filter
     if params[:category_id].present?
       @products = @products.where(category_id: params[:category_id])
     end
 
-    # Filter by special conditions
+    # 🎯 Special Filters
     case params[:filter]
     when "new"
-      @products = @products.where("created_at <= ?", 3.days.ago)
+      @products = @products.where("created_at >= ?", 3.days.ago)
     when "on_sale"
-      # Only return products under 100 
-      @products = @products.where("price < ? ", 100)
+      @products = @products.where("price < ?", 100)
     when "recently_updated"
       @products = @products.where("updated_at >= ? AND created_at < ?", 3.days.ago, 3.days.ago)
     end
 
-    # Pagination
+    # 📄 Pagination
     @products = @products.page(params[:page]).per(12)
   end
 

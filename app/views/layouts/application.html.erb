@@ -17,8 +17,38 @@
     <%= stylesheet_link_tag "application" %>
   </head>
 
-  <body>
-    <main class="container mx-auto mt-28 px-5 flex">
+  <body class="bg-gray-100 min-h-screen text-gray-900">
+    <!-- Navbar -->
+    <nav class="bg-white shadow fixed top-0 w-full z-50">
+      <div class="container mx-auto flex justify-between items-center px-5 py-4">
+        <div class="text-xl font-bold text-indigo-600">
+          <%= link_to "Tech Mart", root_path, class: "hover:underline" %>
+        </div>
+        <div class="space-x-4">
+          <%= link_to "Products", products_path, class: "hover:underline" %>
+        <% if user_signed_in? %>
+          <%= link_to "Cart 🛒", cart_path %>
+          <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "btn btn-danger", form: { style: "display:inline" } %>
+        <% else %>
+          <%= link_to "Login", new_user_session_path %>
+          <%= link_to "Sign Up", new_user_registration_path %>
+        <% end %>
+
+        </div>
+      </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    <div class="mt-24 px-5">
+      <% flash.each do |type, message| %>
+        <div class="mb-4 px-4 py-2 rounded shadow bg-<%= type == "notice" ? "green" : "red" %>-100 text-<%= type == "notice" ? "green" : "red" %>-800">
+          <%= message %>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Page Content -->
+    <main class="container mx-auto px-5 pb-10">
       <%= yield %>
     </main>
   </body>

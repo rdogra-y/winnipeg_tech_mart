@@ -3,6 +3,9 @@
 <h1><%= @product.name %></h1>
 
 <p><strong>Category:</strong> <%= @product.category.name %></p>
+<% if @product.image.attached? %>
+  <%= image_tag @product.image, width: 300 %>
+<% end %>
 <p><strong>Price:</strong> $<%= @product.price %></p>
 <p><strong>Description:</strong> <%= @product.description %></p>
 
