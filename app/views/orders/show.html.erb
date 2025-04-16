@@ -5,36 +5,25 @@
 
 <h2>Items:</h2>
 <ul>
-  <% subtotal = 0 %>
   <% @order.order_items.each do |item| %>
-    <% item_total = item.price * item.quantity %>
-    <% subtotal += item_total %>
     <li style="margin-bottom: 20px;">
       <% if item.product.image.attached? %>
         <%= image_tag item.product.image, width: 100, style: "vertical-align: middle; margin-right: 10px;" %>
       <% end %>
       <strong><%= item.product.name %></strong> —
       Qty: <%= item.quantity %> —
-      $<%= item_total %>
+      $<%= (item.price * item.quantity).round(2) %>
     </li>
   <% end %>
 </ul>
 
 <% province = @order.user.province %>
-<% gst_rate = province.gst.to_f %>
-<% pst_rate = province.pst.to_f %>
-<% hst_rate = province.hst.to_f %>
-<% gst_amount = (subtotal * gst_rate).round(2) %>
-<% pst_amount = (subtotal * pst_rate).round(2) %>
-<% hst_amount = (subtotal * hst_rate).round(2) %>
-<% total_tax = gst_amount + pst_amount + hst_amount %>
-
-<% @tax_amount = total_tax %> <!-- This allows you to reference it below -->
-
 <p><strong>Province:</strong> <%= province.name %></p>
-<p>GST: <%= gst_rate %> | PST: <%= pst_rate %> | HST: <%= hst_rate %></p>
+<p>GST: <%= province.gst %> | PST: <%= province.pst %> | HST: <%= province.hst %></p>
 
 <h2>Billing Summary</h2>
-<p><strong>Subtotal:</strong> $<%= (@order.total - @tax_amount).round(2) %></p>
-<p><strong>Tax:</strong> $<%= @tax_amount.round(2) %></p>
-<p><strong>Total (incl. tax):</strong> $<%= @order.total.round(2) %></p>
+<p><strong>Subtotal:</strong> $<%= @order.subtotal.round(2) %></p>
+<p><strong>GST:</strong> $<%= @order.gst.round(2) %></p>
+<p><strong>PST:</strong> $<%= @order.pst.round(2) %></p>
+<p><strong>HST:</strong> $<%= @order.hst.round(2) %></p>
+<p><strong>Total:</strong> $<%= @order.total.round(2) %></p>

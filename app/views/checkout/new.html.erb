@@ -6,36 +6,35 @@
 
   <p><strong>Select your province:</strong></p>
   <%= select_tag :province_id,
-      options_from_collection_for_select(@provinces, :id, :name, @province&.id),
+      options_from_collection_for_select(@provinces, :id, :name, params[:province_id] || @province&.id),
       onchange: "this.form.submit();" %>
 <% end %>
 
-<!-- ✅ Main Checkout Submission Form -->
-<%= form_with url: checkout_index_path, method: :post, local: true, id: "checkout-form" do %>
-  <h2>Your Cart</h2>
-  <ul>
-    <% @cart.items.each do |item| %>
-      <li>
-        <%= item[:product].name %> -
-        Qty: <%= item[:quantity] %> -
-        $<%= (item[:product].price * item[:quantity]).round(2) %>
-      </li>
-    <% end %>
-  </ul>
+<!-- ✅ Main Checkout Breakdown -->
+<h2>Your Cart</h2>
+<ul>
+  <% @cart.items.each do |item| %>
+    <li>
+      <%= item[:product].name %> -
+      Qty: <%= item[:quantity] %> -
+      $<%= (item[:product].price * item[:quantity]).round(2) %>
+    </li>
+  <% end %>
+</ul>
 
-  <p><strong>Subtotal:</strong> $<%= @subtotal.round(2) %></p>
+<p><strong>Subtotal:</strong> $<%= @subtotal.round(2) %></p>
 
-  <p><strong>Taxes:</strong></p>
-  <ul>
-    <li>GST (<%= (@gst * 100).round(2) %>%): $<%= (@subtotal * @gst).round(2) %></li>
-    <li>PST (<%= (@pst * 100).round(2) %>%): $<%= (@subtotal * @pst).round(2) %></li>
-    <li>HST (<%= (@hst * 100).round(2) %>%): $<%= (@subtotal * @hst).round(2) %></li>
-  </ul>
+<p><strong>Taxes:</strong></p>
+<ul>
+  <li>GST (<%= (@gst * 100).round(2) %>%): $<%= (@subtotal * @gst).round(2) %></li>
+  <li>PST (<%= (@pst * 100).round(2) %>%): $<%= (@subtotal * @pst).round(2) %></li>
+  <li>HST (<%= (@hst * 100).round(2) %>%): $<%= (@subtotal * @hst).round(2) %></li>
+</ul>
 
-  <p><strong>Total (with taxes):</strong> $<%= @total.round(2) %></p>
+<p><strong>Total (with taxes):</strong> $<%= @total.round(2) %></p>
 
-  <!-- ✅ Pass selected province to controller -->
+<!-- ✅ Stripe Checkout Button (with province_id) -->
+<%= form_with url: create_checkout_session_path, method: :post, local: true do %>
   <%= hidden_field_tag :province_id, @province&.id %>
-
-  <%= submit_tag "Place Order", class: "btn btn-primary" %>
+  <%= submit_tag "Pay with Card", class: "btn btn-primary" %>
 <% end %>

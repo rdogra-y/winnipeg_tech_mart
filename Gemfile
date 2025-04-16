@@ -29,6 +29,10 @@ gem "nokogiri"
 
 gem 'mini_magick'
 
+gem 'stripe'
+
+gem 'dotenv-rails', groups: [:development, :test]
+
 # ✅ SEO-friendly URLs (optional but nice-to-have)
 gem "friendly_id", "~> 5.4.0"
 

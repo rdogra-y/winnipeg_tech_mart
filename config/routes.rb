@@ -22,6 +22,9 @@ Rails.application.routes.draw do
 
   # Checkout
   resources :checkout, only: [:new, :create]
+  post '/checkout/charge', to: 'checkout#charge', as: :charge  # <--  Existing Stripe payment route
+  post 'checkout/create_checkout_session', to: 'checkout#create_checkout_session', as: :create_checkout_session 
+  get 'checkout/success', to: 'checkout#success'
 
   # Orders
   resources :orders, only: [:index, :show]
