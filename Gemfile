@@ -34,7 +34,7 @@ gem 'stripe'
 gem 'dotenv-rails', groups: [:development, :test]
 
 # ✅ SEO-friendly URLs (optional but nice-to-have)
-gem "friendly_id", "~> 5.4.0"
+gem "friendly_id", "~> 5.5.1"
 
 group :development, :test do
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
