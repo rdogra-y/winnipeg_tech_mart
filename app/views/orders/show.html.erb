@@ -29,13 +29,12 @@
 <% hst_amount = (subtotal * hst_rate).round(2) %>
 <% total_tax = gst_amount + pst_amount + hst_amount %>
 
+<% @tax_amount = total_tax %> <!-- This allows you to reference it below -->
+
 <p><strong>Province:</strong> <%= province.name %></p>
 <p>GST: <%= gst_rate %> | PST: <%= pst_rate %> | HST: <%= hst_rate %></p>
 
 <h2>Billing Summary</h2>
-<p>Subtotal: $<%= subtotal.round(2) %></p>
-<p>GST Amount: $<%= gst_amount %></p>
-<p>PST Amount: $<%= pst_amount %></p>
-<p>HST Amount: $<%= hst_amount %></p>
-<p><strong>Total Tax:</strong> $<%= total_tax %></p>
+<p><strong>Subtotal:</strong> $<%= (@order.total - @tax_amount).round(2) %></p>
+<p><strong>Tax:</strong> $<%= @tax_amount.round(2) %></p>
 <p><strong>Total (incl. tax):</strong> $<%= @order.total.round(2) %></p>

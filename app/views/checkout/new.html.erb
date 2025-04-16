@@ -1,11 +1,17 @@
 <h1>Checkout</h1>
 
-<%= form_with url: checkout_index_path, method: :post, local: true do %>
+<!-- ✅ Province Selector Form to dynamically update tax breakdown -->
+<%= form_with url: new_checkout_path, method: :get, local: true, id: "province-form" do %>
   <h2>Shipping Details</h2>
 
   <p><strong>Select your province:</strong></p>
-  <%= select_tag :province_id, options_from_collection_for_select(@provinces, :id, :name, @province&.id) %>
+  <%= select_tag :province_id,
+      options_from_collection_for_select(@provinces, :id, :name, @province&.id),
+      onchange: "this.form.submit();" %>
+<% end %>
 
+<!-- ✅ Main Checkout Submission Form -->
+<%= form_with url: checkout_index_path, method: :post, local: true, id: "checkout-form" do %>
   <h2>Your Cart</h2>
   <ul>
     <% @cart.items.each do |item| %>
@@ -18,10 +24,18 @@
   </ul>
 
   <p><strong>Subtotal:</strong> $<%= @subtotal.round(2) %></p>
-  <p><strong>GST:</strong> $<%= (@subtotal * @gst).round(2) %></p>
-  <p><strong>PST:</strong> $<%= (@subtotal * @pst).round(2) %></p>
-  <p><strong>HST:</strong> $<%= (@subtotal * @hst).round(2) %></p>
+
+  <p><strong>Taxes:</strong></p>
+  <ul>
+    <li>GST (<%= (@gst * 100).round(2) %>%): $<%= (@subtotal * @gst).round(2) %></li>
+    <li>PST (<%= (@pst * 100).round(2) %>%): $<%= (@subtotal * @pst).round(2) %></li>
+    <li>HST (<%= (@hst * 100).round(2) %>%): $<%= (@subtotal * @hst).round(2) %></li>
+  </ul>
+
   <p><strong>Total (with taxes):</strong> $<%= @total.round(2) %></p>
+
+  <!-- ✅ Pass selected province to controller -->
+  <%= hidden_field_tag :province_id, @province&.id %>
 
   <%= submit_tag "Place Order", class: "btn btn-primary" %>
 <% end %>

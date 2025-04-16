@@ -5,7 +5,7 @@ class CheckoutController < ApplicationController
     @cart = Cart.new(session)
     @provinces = Province.all
 
-    @province = current_user.province || @provinces.first
+    @province = params[:province_id].present? ? Province.find_by(id: params[:province_id]) : current_user.province || @provinces.first
 
     @subtotal = @cart.total
     @gst = @province.gst || 0
@@ -17,6 +17,10 @@ class CheckoutController < ApplicationController
   def create
     @cart = Cart.new(session)
     province = Province.find(params[:province_id])
+
+    # ✅ Update user's province (for 3.1.5)
+    current_user.update!(province: province)
+
     subtotal = @cart.total
     gst = subtotal * province.gst
     pst = subtotal * province.pst
@@ -37,7 +41,7 @@ class CheckoutController < ApplicationController
       )
     end
 
-    # Optional: clear the cart
+    # ✅ Clear cart after successful order
     @cart.clear
 
     redirect_to order_path(order), notice: "Order placed successfully!"
