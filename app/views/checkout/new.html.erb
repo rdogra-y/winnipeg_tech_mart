@@ -4,7 +4,7 @@
   <h2>Shipping Details</h2>
 
   <p><strong>Select your province:</strong></p>
-  <%= select_tag :province_id, options_from_collection_for_select(@provinces, :id, :name) %>
+  <%= select_tag :province_id, options_from_collection_for_select(@provinces, :id, :name, @province&.id) %>
 
   <h2>Your Cart</h2>
   <ul>
@@ -12,12 +12,16 @@
       <li>
         <%= item[:product].name %> -
         Qty: <%= item[:quantity] %> -
-        $<%= item[:product].price * item[:quantity] %>
+        $<%= (item[:product].price * item[:quantity]).round(2) %>
       </li>
     <% end %>
   </ul>
 
-  <p><strong>Total (without taxes):</strong> $<%= @cart.total %></p>
+  <p><strong>Subtotal:</strong> $<%= @subtotal.round(2) %></p>
+  <p><strong>GST:</strong> $<%= (@subtotal * @gst).round(2) %></p>
+  <p><strong>PST:</strong> $<%= (@subtotal * @pst).round(2) %></p>
+  <p><strong>HST:</strong> $<%= (@subtotal * @hst).round(2) %></p>
+  <p><strong>Total (with taxes):</strong> $<%= @total.round(2) %></p>
 
   <%= submit_tag "Place Order", class: "btn btn-primary" %>
 <% end %>

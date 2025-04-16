@@ -4,6 +4,14 @@ class CheckoutController < ApplicationController
   def new
     @cart = Cart.new(session)
     @provinces = Province.all
+
+    @province = current_user.province || @provinces.first
+
+    @subtotal = @cart.total
+    @gst = @province.gst || 0
+    @pst = @province.pst || 0
+    @hst = @province.hst || 0
+    @total = @subtotal * (1 + @gst + @pst + @hst)
   end
 
   def create
