@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <title><%= content_for(:title) || "Winnipeg Tech Mart" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -7,49 +7,158 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= yield :head %>
+    <!-- ✅ Fonts & Tailwind CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@300;400;700&family=Orbitron:wght@500&display=swap" rel="stylesheet">
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "application" %>
 
+    <!-- ✅ Manifest and Icons -->
     <link rel="manifest" href="/manifest.json">
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
-    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
-    <%= stylesheet_link_tag "application" %>
+
+    <!-- ✅ Barbie + Spaceship + Glassmorphism Theme (Readable version) -->
+    <style>
+    body {
+      background: linear-gradient(to bottom right, #fbeaff, #fbd0ff);
+      font-family: 'Nunito', sans-serif;
+      background-attachment: fixed;
+      background-size: cover;
+      color: #1a1a1a; /* Darker font for better readability */
+    }
+  
+    nav {
+      backdrop-filter: blur(10px);
+      background-color: rgba(255, 255, 255, 0.7);
+      border-bottom: 1px solid #ccc;
+      color: #222;
+    }
+  
+    .barbie-brand {
+      font-family: 'Pacifico', cursive;
+      color: #ff69b4;
+      font-size: 1.7rem;
+      animation: slideIn 1.2s ease-out forwards;
+    }
+  
+    @keyframes slideIn {
+      0% { transform: translateX(-40px); opacity: 0; }
+      100% { transform: translateX(0); opacity: 1; }
+    }
+  
+    .glass-box {
+      background-color: #f8f9fa;
+      border-radius: 20px;
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.3);
+      backdrop-filter: blur(7px);
+      -webkit-backdrop-filter: blur(7px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #222;
+    }
+  
+    .btn {
+      padding: 0.5rem 1rem;
+      border-radius: 9999px;
+      font-weight: 600;
+      transition: all 0.3s ease-in-out;
+    }
+  
+    .btn-danger {
+      background-color: #ff5e78;
+      color: white;
+    }
+  
+    .btn-danger:hover {
+      background-color: #ff3e60;
+    }
+  
+    .hover\:underline:hover {
+      text-decoration: underline;
+      color: #222;
+    }
+  
+    .flash {
+      animation: popin 0.4s ease-out;
+    }
+  
+    @keyframes popin {
+      from { transform: scale(0.95); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+  
+    .breadcrumbs a {
+      color: #444;
+      text-decoration: underline;
+    }
+  
+    .breadcrumbs span {
+      font-weight: bold;
+      color: #111;
+    }
+  
+    h1, h2, h3, h4 {
+      font-family: 'Orbitron', sans-serif;
+      letter-spacing: 0.5px;
+      color: #0a0033;
+    }
+  
+    .space-panel {
+      border: 1px solid #aaa;
+      background: linear-gradient(120deg, rgba(255, 255, 255, 0.15), rgba(240, 240, 255, 0.05));
+      box-shadow: 0 0 20px rgba(140, 190, 255, 0.25);
+      padding: 1.5rem;
+      border-radius: 1rem;
+    }
+  </style>  
   </head>
 
-  <body class="bg-gray-100 min-h-screen text-gray-900">
-    <!-- Navbar -->
-    <nav class="bg-white shadow fixed top-0 w-full z-50">
-      <div class="container mx-auto flex justify-between items-center px-5 py-4">
-        <div class="text-xl font-bold text-indigo-600">
+  <body class="min-h-screen text-gray-900">
+    <!-- ✅ Navbar -->
+    <nav class="fixed top-0 w-full z-50 py-4 px-6">
+      <div class="container mx-auto flex justify-between items-center">
+        <div class="barbie-brand">
           <%= link_to "Tech Mart", root_path, class: "hover:underline" %>
         </div>
-        <div class="space-x-4">
+        <div class="space-x-4 flex items-center">
           <%= link_to "Products", products_path, class: "hover:underline" %>
-        <% if user_signed_in? %>
-          <%= link_to "Cart 🛒", cart_path %>
-          <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "btn btn-danger", form: { style: "display:inline" } %>
-        <% else %>
-          <%= link_to "Login", new_user_session_path %>
-          <%= link_to "Sign Up", new_user_registration_path %>
-        <% end %>
-
+          <% if user_signed_in? %>
+            <%= link_to "Cart 🛒", cart_path, class: "hover:underline" %>
+            <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "btn btn-danger", form: { style: "display:inline" } %>
+          <% else %>
+            <%= link_to "Login", new_user_session_path, class: "hover:underline" %>
+            <%= link_to "Sign Up", new_user_registration_path, class: "hover:underline" %>
+          <% end %>
         </div>
       </div>
     </nav>
+    
+    <div class="px-6 pt-24 pb-2 text-sm text-gray-700">
+      <%= render_breadcrumbs %>
+    </div>
 
-    <!-- Flash Messages -->
+    <!-- ✅ Flash Messages -->
     <div class="mt-24 px-5">
       <% flash.each do |type, message| %>
-        <div class="mb-4 px-4 py-2 rounded shadow bg-<%= type == "notice" ? "green" : "red" %>-100 text-<%= type == "notice" ? "green" : "red" %>-800">
+        <% color =
+            case type
+            when "notice" then "green"
+            when "alert" then "red"
+            when "sparkle" then "pink"
+            when "success" then "emerald"
+            when "error" then "rose"
+            else "blue"
+            end %>
+        <div class="flash mb-4 px-4 py-2 rounded shadow glass-box text-<%= color %>-800">
           <%= message %>
         </div>
       <% end %>
     </div>
-
-    <!-- Page Content -->
+    
+    <!-- ✅ Page Content -->
     <main class="container mx-auto px-5 pb-10">
       <%= yield %>
     </main>
+
   </body>
 </html>

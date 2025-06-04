@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/mailslurp/mailslurp-client-ruby
+  revision: afd97fe5342cbae54c69c0f7eb35a1e0b06a57f3
+  specs:
+    mailslurp_client (15.20.0)
+      json (~> 2.1, >= 2.1.0)
+      typhoeus (~> 1.0, >= 1.0.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -128,6 +136,8 @@ GEM
     drb (2.2.1)
     error_highlight (0.7.0)
     erubi (1.13.1)
+    ethon (0.16.0)
+      ffi (>= 1.15.0)
     faker (3.5.1)
       i18n (>= 1.8.11, < 2)
     ffi (1.17.1-aarch64-linux-gnu)
@@ -290,6 +300,10 @@ GEM
       i18n
     rdoc (6.13.0)
       psych (>= 4.0.0)
+    redis (5.4.0)
+      redis-client (>= 0.22.0)
+    redis-client (0.24.0)
+      connection_pool
     regexp_parser (2.10.0)
     reline (0.6.0)
       io-console (~> 0.5)
@@ -346,6 +360,12 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
+    sidekiq (7.3.9)
+      base64
+      connection_pool (>= 2.3.0)
+      logger
+      rack (>= 2.2.4)
+      redis-client (>= 0.22.2)
     sprockets (4.2.1)
       concurrent-ruby (~> 1.0)
       rack (>= 2.2.4, < 4)
@@ -368,6 +388,8 @@ GEM
     thor (1.3.2)
     tilt (2.6.0)
     timeout (0.4.3)
+    typhoeus (1.4.1)
+      ethon (>= 0.9.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     unicode-display_width (3.1.4)
@@ -415,14 +437,17 @@ DEPENDENCIES
   image_processing (~> 1.2)
   jbuilder
   kaminari
+  mailslurp_client!
   mini_magick
   nokogiri
   pg (~> 1.1)
   puma (>= 5.0)
   rails (~> 7.2.2, >= 7.2.2.1)
+  redis
   rubocop-rails-omakase
   sassc-rails
   selenium-webdriver
+  sidekiq
   sprockets-rails
   stripe
   tailwindcss-rails (~> 4.2)

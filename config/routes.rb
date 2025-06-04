@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  # ✅ Proper RESTful route for tax updates
+  resources :provinces, only: [:index, :edit, :update]
+
   # Devise for Customers and Admins
   devise_for :users
   devise_for :admin_users, ActiveAdmin::Devise.config
@@ -22,7 +25,7 @@ Rails.application.routes.draw do
 
   # Checkout
   resources :checkout, only: [:new, :create]
-  post '/checkout/charge', to: 'checkout#charge', as: :charge  # <--  Existing Stripe payment route
+  post '/checkout/charge', to: 'checkout#charge', as: :charge
   post 'checkout/create_checkout_session', to: 'checkout#create_checkout_session', as: :create_checkout_session 
   get 'checkout/success', to: 'checkout#success'
 

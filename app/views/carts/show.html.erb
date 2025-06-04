@@ -1,10 +1,59 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
+    <meta charset="utf-8">
     <title>Your Shopping Cart</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag 'application', media: 'all' %>
+
+    <!-- Add Barbie + Glassmorphism CSS -->
+    <style>
+      body {
+        background: linear-gradient(145deg, #ffe0f0, #fbeeff);
+        font-family: 'Nunito', sans-serif;
+      }
+      .glass-box {
+        background: rgba(255, 255, 255, 0.5);
+        border-radius: 20px;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        backdrop-filter: blur(7px);
+        -webkit-backdrop-filter: blur(7px);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+      }
+      .btn-primary {
+        background-color: #ff5e78;
+        color: white;
+        padding: 0.4rem 1rem;
+        border-radius: 9999px;
+        font-weight: bold;
+        border: none;
+        transition: background 0.3s ease-in-out;
+      }
+      .btn-primary:hover {
+        background-color: #ff3e60;
+      }
+      h1 {
+        font-family: 'Pacifico', cursive;
+        font-size: 2.5rem;
+        color: #333;
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+      .checkout-button {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+      }
+      .province-dropdown {
+        margin-bottom: 1rem;
+      }
+    </style>
+
+    <!-- Optional: Barbie font link -->
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@300;400;700&display=swap" rel="stylesheet">
   </head>
 
   <body class="container mt-5">
@@ -12,10 +61,10 @@
 
     <% if @cart_items.any? %>
       <% @cart_items.each do |product| %>
-        <div class="card p-3 mb-4">
-          
+        <div class="glass-box p-3 mb-4">
+
           <% if product.image.attached? %>
-            <%= image_tag product.image, width: 120, class: "mb-2", style: "object-fit: cover;" %>
+            <%= image_tag product.image, width: 120, class: "mb-2", style: "object-fit: cover;", alt: product.name %>
           <% end %>
 
           <h4><%= product.name %></h4>
@@ -25,19 +74,24 @@
           <%= form_with url: update_item_cart_path(product), method: :post, local: true do %>
             <%= hidden_field_tag :product_id, product.id %>
             <%= number_field_tag :quantity, session[:cart][product.id.to_s], min: 1, class: "form-control w-25 d-inline" %>
-            <%= submit_tag "Update Quantity", class: "btn btn-sm btn-outline-success ml-2" %>
+            <%= submit_tag "Update", class: "btn btn-primary ml-2" %>
           <% end %>
-
-          <%= button_to "Remove", remove_item_cart_path(product), method: :delete,
-              data: { confirm: "Are you sure?" }, class: "btn btn-sm btn-outline-danger mt-2" %>
-
-        </div> <!-- closes the card div -->
+        </div>
       <% end %>
 
-      <p><strong>Total: $<%= @cart_items.sum { |p| p.price * session[:cart][p.id.to_s].to_i } %></strong></p>
-      <%= link_to "Checkout", new_checkout_path, class: "btn btn-primary" %>
+      <!-- ✅ Barbie-style Checkout Form -->
+      <div class="checkout-button">
+        <%= form_with url: create_checkout_session_path, method: :post, local: true do %>
+          <div class="province-dropdown">
+            <%= label_tag :province_id, "Select your Province:", class: "font-bold mb-2" %><br>
+            <%= select_tag :province_id, options_from_collection_for_select(Province.all, :id, :name), class: "form-control" %>
+          </div>
+          <%= submit_tag "Proceed to Checkout 💳", class: "btn-primary" %>
+        <% end %>
+      </div>
+
     <% else %>
-      <p>Your cart is empty.</p>
+      <p class="glass-box p-4 text-center">Your cart is empty.</p>
     <% end %>
   </body>
 </html>

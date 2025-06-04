@@ -1,4 +1,5 @@
 class StaticPagesController < ApplicationController
+  layout "application"
   def show
     @page = StaticPage.find_by(slug: params[:slug])
     if @page.nil?

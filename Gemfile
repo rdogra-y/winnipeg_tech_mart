@@ -33,6 +33,8 @@ gem 'stripe'
 
 gem 'dotenv-rails', groups: [:development, :test]
 
+gem 'mailslurp_client', git: 'https://github.com/mailslurp/mailslurp-client-ruby'
+
 # ✅ SEO-friendly URLs (optional but nice-to-have)
 gem "friendly_id", "~> 5.4.0"
 

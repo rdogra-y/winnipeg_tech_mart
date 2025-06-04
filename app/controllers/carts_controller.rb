@@ -1,4 +1,6 @@
 class CartsController < ApplicationController
+  layout "application"
+
   before_action :initialize_cart
 
   def show
@@ -9,6 +11,8 @@ class CartsController < ApplicationController
     id = params[:product_id].to_s
     session[:cart][id] ||= 0
     session[:cart][id] += 1
+
+    flash[:sparkle] = "✨ You added #{Product.find(id).name} to your pink-powered cart!"
     redirect_to cart_path, notice: "Product added to cart."
   end
 
@@ -20,7 +24,7 @@ class CartsController < ApplicationController
   def update_quantity
     id = params[:product_id].to_s
     quantity = params[:quantity].to_i
-  
+
     if quantity > 0
       session[:cart][id] = quantity
       flash[:notice] = "Quantity updated."
@@ -28,10 +32,9 @@ class CartsController < ApplicationController
       session[:cart].delete(id)
       flash[:alert] = "Item removed due to 0 quantity."
     end
-  
+
     redirect_to cart_path
   end
-  
 
   private
 

@@ -1,13 +1,27 @@
 #!/bin/bash -e
 
-# Enable jemalloc for reduced memory usage and latency.
+# Enable jemalloc for better memory usage if available
 if [ -z "${LD_PRELOAD+x}" ] && [ -f /usr/lib/*/libjemalloc.so.2 ]; then
   export LD_PRELOAD="$(echo /usr/lib/*/libjemalloc.so.2)"
 fi
 
-# If running the rails server then create or migrate existing database
+# Wait for PostgreSQL to be ready
+echo "==> Waiting for database at $DB_HOST..."
+until pg_isready -h "$DB_HOST" -U "$POSTGRES_USER" > /dev/null 2>&1; do
+  sleep 1
+done
+
+# Create/migrate DB only when running the web server
 if [ "${1}" == "./bin/rails" ] && [ "${2}" == "server" ]; then
+  echo "==> Preparing database..."
   ./bin/rails db:prepare
 fi
 
+# Optional: Run Sidekiq separately
+if [ "${1}" == "sidekiq" ]; then
+  echo "==> Starting Sidekiq..."
+  exec bundle exec sidekiq
+fi
+
+# Run passed command (e.g., Rails server)
 exec "${@}"

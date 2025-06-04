@@ -1,4 +1,5 @@
 class ProductsController < InheritedResources::Base
+  layout "application"
   before_action :load_categories, only: [:index]
 
   def index

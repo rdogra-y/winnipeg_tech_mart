@@ -1,4 +1,5 @@
 class OrdersController < ApplicationController
+  layout "application"
   before_action :authenticate_user! # ensures user is logged in
 
   def new
