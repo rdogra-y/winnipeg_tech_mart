@@ -222,21 +222,21 @@ GEM
     net-smtp (0.5.1)
       net-protocol
     nio4r (2.7.4)
-    nokogiri (1.18.6-aarch64-linux-gnu)
+    nokogiri (1.18.9-aarch64-linux-gnu)
       racc (~> 1.4)
-    nokogiri (1.18.6-aarch64-linux-musl)
+    nokogiri (1.18.9-aarch64-linux-musl)
       racc (~> 1.4)
-    nokogiri (1.18.6-arm-linux-gnu)
+    nokogiri (1.18.9-arm-linux-gnu)
       racc (~> 1.4)
-    nokogiri (1.18.6-arm-linux-musl)
+    nokogiri (1.18.9-arm-linux-musl)
       racc (~> 1.4)
-    nokogiri (1.18.6-arm64-darwin)
+    nokogiri (1.18.9-arm64-darwin)
       racc (~> 1.4)
-    nokogiri (1.18.6-x86_64-darwin)
+    nokogiri (1.18.9-x86_64-darwin)
       racc (~> 1.4)
-    nokogiri (1.18.6-x86_64-linux-gnu)
+    nokogiri (1.18.9-x86_64-linux-gnu)
       racc (~> 1.4)
-    nokogiri (1.18.6-x86_64-linux-musl)
+    nokogiri (1.18.9-x86_64-linux-musl)
       racc (~> 1.4)
     orm_adapter (0.5.0)
     parallel (1.26.3)
@@ -300,10 +300,6 @@ GEM
       i18n
     rdoc (6.13.0)
       psych (>= 4.0.0)
-    redis (5.4.0)
-      redis-client (>= 0.22.0)
-    redis-client (0.24.0)
-      connection_pool
     regexp_parser (2.10.0)
     reline (0.6.0)
       io-console (~> 0.5)
@@ -360,12 +356,6 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
-    sidekiq (7.3.9)
-      base64
-      connection_pool (>= 2.3.0)
-      logger
-      rack (>= 2.2.4)
-      redis-client (>= 0.22.2)
     sprockets (4.2.1)
       concurrent-ruby (~> 1.0)
       rack (>= 2.2.4, < 4)
@@ -443,11 +433,9 @@ DEPENDENCIES
   pg (~> 1.1)
   puma (>= 5.0)
   rails (~> 7.2.2, >= 7.2.2.1)
-  redis
   rubocop-rails-omakase
   sassc-rails
   selenium-webdriver
-  sidekiq
   sprockets-rails
   stripe
   tailwindcss-rails (~> 4.2)
